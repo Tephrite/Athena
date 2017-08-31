@@ -1,0 +1,18 @@
+#!/usr/bin/env python3.6
+
+
+class QueryHandler:
+
+    def __init__(self):
+        2
+
+    def decipherQuery(self, input):
+        if "time" in input:
+            print("time")
+        elif "conversation" in input:
+            print("conversation")
+        elif ("play" in input) and ("song" in input):
+            print("spotify")
+
+
+

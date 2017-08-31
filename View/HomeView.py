@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.6
 from Model.Speech import *
+from Model.QueryHandler import *
 
 try:
     from Tkinter import *
@@ -18,6 +19,7 @@ except ImportError:
 
 font24 = "-family {Tw Cen MT Condensed Extra Bold} -size 24 "  \
         "-weight normal -slant roman -underline 0 -overstrike 0"
+speech = Speech
 
 class Athena(Tk):
     def __init__(self, *args, **kwargs):
@@ -49,9 +51,18 @@ class Athena(Tk):
 
         self.tText = self.canvas.create_text(900, 900, text="", font=font24, fill="#c0c0c0", anchor=N)
 
-        self.bButton = Button(self, text="Activate", command=self.getSpeech, anchor=W)
-        self.bButton.configure(width=10, activebackground="#33B5E5", relief=FLAT)
-        self.bButton_window = self.canvas.create_window(900, 1000, anchor=NW, window=self.bButton)
+        self.inputCheck()
+
+    def inputCheck(self):
+        input = speech.getSpeech()
+        if input in "hey Athena":
+            speech.speak("How may I be of assistance?")
+            speech.getSpeech()
+
+        else:
+            self.after(2000, self.inputCheck)
+
+
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -64,9 +75,6 @@ class Athena(Tk):
         app = Athena()
         app.mainloop()
 
-    def getSpeech(self):
-        speech = Speech()
-        speech.getSpeech(self)
 
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.6
-from Model.Speech import *
+
 from Model.QueryHandler import *
+from Model.Time import *
 
 try:
     from Tkinter import *
@@ -22,7 +23,9 @@ font24 = "-family {Tw Cen MT Condensed Extra Bold} -size 24 "  \
 speech = Speech
 
 class Athena(Tk):
+
     def __init__(self, *args, **kwargs):
+
         Tk.__init__(self, *args, **kwargs)
         Tk.wm_title(self, "Athena")
         Tk.wm_iconbitmap(self, "D:\\Programming\\Python Projects\\Athena\\Images\\logo.ico")
@@ -47,21 +50,31 @@ class Athena(Tk):
         self.canvas.pack(expand=YES, fill=BOTH)
 
         self.iBackground = PhotoImage(file="D:\Programming\Python Projects\Athena\Images\BackgroundFull.png")
-        self.canvas.create_image(0,0, image=self.iBackground, anchor = NW)
+        self.canvas.create_image(0, 0, image=self.iBackground, anchor=NW)
 
         self.tText = self.canvas.create_text(900, 900, text="", font=font24, fill="#c0c0c0", anchor=N)
 
-        self.inputCheck()
+        button1 = Button(self, text="Start", command=self.inputCheck, anchor=W)
+        button1.configure(width=10, activebackground="#33B5E5", relief=FLAT)
+        button1_window = self.canvas.create_window(1920 / 2, 1080 - (1080 * 0.1), anchor=NW, window=button1)
+
+
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+
 
     def inputCheck(self):
+
         input = speech.getSpeech()
-        if input in "hey Athena":
-            speech.speak("How may I be of assistance?")
-            speech.getSpeech()
 
-        else:
-            self.after(2000, self.inputCheck)
+        while "hey" not in input:
+            input = speech.getSpeech()
+            print("2")
+        speech.speak("Yes?")
 
+        choice = speech.getSpeech()
+        decipherQuery(choice)
 
 
     def show_frame(self, cont):
@@ -74,6 +87,7 @@ class Athena(Tk):
 
         app = Athena()
         app.mainloop()
+
 
 
 

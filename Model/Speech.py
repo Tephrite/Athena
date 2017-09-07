@@ -3,6 +3,9 @@
 import speech_recognition as sr
 from gtts import gTTS
 from pygame import mixer
+from mutagen.mp3 import MP3
+from time import sleep
+import os
 
 r = sr.Recognizer()
 m = sr.Microphone()
@@ -20,7 +23,8 @@ class Speech:
             with m as source:
                 r.energy_threshold=68
                 print("Set minimum energy threshold to {}".format(r.energy_threshold))
-                audio = r.listen(source, phrase_time_limit=3)
+                #audio = r.listen(source, phrase_time_limit=3)
+                audio = r.listen(source)
                 try:
                     # recognize speech using Google Speech Recognition
                     value = r.recognize_google(audio)
@@ -40,9 +44,20 @@ class Speech:
              pass
 
     def speak(textString):
+        if os.path.isfile('D:/Programming/Python Projects/Athena/audio.mp3') is True:
+            os.remove('D:/Programming/Python Projects/Athena/audio.mp3')
         tts = gTTS(text=textString, lang='en')
         tts.save("audio.mp3")
+        audio = MP3("D:/Programming/Python Projects/Athena/audio.mp3")
+
         mixer.init()
         mixer.music.load('D:/Programming/Python Projects/Athena/audio.mp3')
         mixer.music.play()
+
+        print(audio.info.length)
+        sleep(audio.info.length)
+        mixer.music.stop()
+        mixer.quit()
+
+
 
